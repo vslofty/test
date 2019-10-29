@@ -23,7 +23,10 @@
     .live_cover {
       width: 470px;
       height: 265px;
-      background: rgba(245, 247, 250, 1);
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .content {
@@ -39,7 +42,16 @@
       width: 90px;
       height: 90px;
       margin-right: 20px;
+      border-radius: 50%;
       overflow: hidden;
+    }
+
+    .ellipsis {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      word-wrap: normal;
+      word-break: keep-all;
     }
   </style>
 
@@ -47,50 +59,49 @@
 
 <body>
   <div class="box">
-    <img src="" class="live_cover">
+    <div class="live_cover">
+      <img src="https://i2.vzan.cc/image/liveimg/jpeg/2019/10/21/15032544f5ab2bebb34e3391390dbadff131e1.jpeg"
+        style="width:100%;">
+    </div>
     <div class="content">
-      <img src="" class="live_img">
-      <div style="display: flex;flex-direction: column;line-height: 1.5;">
-        <span style="font-size:34px;color:#241E1E;">四会边境翡翠直播</span>
-        <span style="font-size:28px;color:#909399;">张玉堂翡翠直播间</span>
+      <img src="https://i2.vzan.cc/image/live/headimg/jpeg/2019/4/29/2121481823064645994afe943c0e80d540df5d.jpeg"
+        class="live_img">
+      <div style="flex:1;overflow:hidden;display:flex;flex-direction: column;line-height: 1.5;">
+        <span class="ellipsis" style="font-size:34px;color:#241E1E;">四会边境翡翠直播</span>
+        <span class="ellipsis" style="font-size:28px;color:#909399;">张玉堂翡翠直播间</span>
       </div>
     </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
   <script src="./html2canvas.min.js" type="text/javascript" charset="utf-8"></script>
-  <script src="./canvas2image.js" type="text/javascript" charset="utf-8"></script>
+  <!-- <script src="https://cdn.bootcss.com/html2canvas/0.4.1/html2canvas.js"></script> -->
   <script>
     $(function () {
       var box = $(".box");
       var boxDom = box.get(0); //将jQuery对象转换为dom对象
-      htmlToimg(boxDom, box)
-      function htmlToimg(ele, el) {
+      // 调用html2canvas插件
+      html2canvas(boxDom).then(function (canvas) {
+        var canvasWidth = canvas.width;// canvas宽度
+        var canvasHeight = canvas.height;// canvas高度
+        console.log(canvasWidth + "    " + canvasHeight);
+        box.hide();
+        console.log(canvas.toDataURL())
+        box.after('<img src="' + canvas.toDataURL() + '"/>');
+      });
+
+
+      htmlToimg(box)
+      function htmlToimg(ele) {
         html2canvas(ele, {
           // 页面高度  
-          height: el.outerHeight(),
+          height: ele.outerHeight(),
           // 页面宽度
-          width: el.outerWidth(),
+          width: ele.outerWidth(),
           onrendered: function (canvas) {
-            console.log(canvas.toDataURL())
-            // // 生成图片的地址
-            // ele.find("#down1").attr('src',canvas.toDataURL());
-            // // 图片名字
-            // ele.find("#down1").attr('poster.png') ; 
+            box.after('<img src="' + canvas.toDataURL() + '"/>');
           }
         });
       }
-      // 调用html2canvas插件
-      // html2canvas(boxDom).then(function (canvas) {
-      //   var canvasWidth = canvas.width;// canvas宽度
-      //   var canvasHeight = canvas.height;// canvas高度
-      //   console.log(canvasWidth + "    " + canvasHeight);
-      //   box.hide();
-      //   // 将canvas转为图片
-      //   var img = Canvas2Image.convertToImage(canvas, canvasWidth, canvasHeight);
-      //   console.log(img)
-      //   // 渲染图片，并且加到页面中查看效果
-      //   box.after(img);
-      // });
     });
   </script>
 </body>
