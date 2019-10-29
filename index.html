@@ -1,0 +1,96 @@
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=320,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>实现HTML转图片</title>
+  <style type="text/css" media="screen">
+    body {
+      background: #dcc;
+    }
+
+    .box {
+      width: 500px;
+      height: 400px;
+      padding: 15px;
+      padding-bottom: 0;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+
+    .live_cover {
+      width: 470px;
+      height: 265px;
+      background: rgba(245, 247, 250, 1);
+    }
+
+    .content {
+      flex: 1;
+      padding: 15px 0;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    .live_img {
+      width: 90px;
+      height: 90px;
+      margin-right: 20px;
+      overflow: hidden;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="box">
+    <img src="" class="live_cover">
+    <div class="content">
+      <img src="" class="live_img">
+      <div style="display: flex;flex-direction: column;line-height: 1.5;">
+        <span style="font-size:34px;color:#241E1E;">四会边境翡翠直播</span>
+        <span style="font-size:28px;color:#909399;">张玉堂翡翠直播间</span>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="http://html2canvas.hertzen.com/dist/html2canvas.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="canvas2image.js" type="text/javascript" charset="utf-8"></script>
+  <script>
+    $(function () {
+      var box = $(".box");
+      var boxDom = box.get(0); //将jQuery对象转换为dom对象
+      htmlToimg(boxDom, box)
+      function htmlToimg(ele, el) {
+        html2canvas(ele, {
+          // 页面高度  
+          height: el.outerHeight(),
+          // 页面宽度
+          width: el.outerWidth(),
+          onrendered: function (canvas) {
+            console.log(canvas.toDataURL())
+            // // 生成图片的地址
+            // ele.find("#down1").attr('src',canvas.toDataURL());
+            // // 图片名字
+            // ele.find("#down1").attr('poster.png') ; 
+          }
+        });
+      }
+      // 调用html2canvas插件
+      // html2canvas(boxDom).then(function (canvas) {
+      //   var canvasWidth = canvas.width;// canvas宽度
+      //   var canvasHeight = canvas.height;// canvas高度
+      //   console.log(canvasWidth + "    " + canvasHeight);
+      //   box.hide();
+      //   // 将canvas转为图片
+      //   var img = Canvas2Image.convertToImage(canvas, canvasWidth, canvasHeight);
+      //   console.log(img)
+      //   // 渲染图片，并且加到页面中查看效果
+      //   box.after(img);
+      // });
+    });
+  </script>
+</body>
